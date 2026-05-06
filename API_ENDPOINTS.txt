@@ -1,0 +1,910 @@
+================================================================================
+                          API ENDPOINTS DOCUMENTATION
+                           PROJECT: IGA Network Platform
+                              Base URL: http://localhost:8000/api
+================================================================================
+
+This document lists all available API endpoints for the IGA Network Platform.
+All endpoints marked with [AUTH] require Bearer token authentication.
+
+
+================================================================================
+                          AUTHENTICATION ENDPOINTS
+================================================================================
+
+1. USER REGISTRATION
+   Method:   POST
+   Endpoint: /register
+   Auth:     No
+   Description: Register a new user account
+   Request Body:
+   {
+     "first_name": "string",
+     "last_name": "string",
+     "email": "string",
+     "password": "string",
+     "role": "STUDENT|TEACHER|RESEARCHER|ADMIN"
+   }
+
+
+2. USER LOGIN
+   Method:   POST
+   Endpoint: /login
+   Auth:     No
+   Description: Authenticate user and receive API token
+   Request Body:
+   {
+     "email": "string",
+     "password": "string"
+   }
+
+
+3. GET CURRENT USER
+   Method:   GET
+   Endpoint: /user
+   Auth:     [AUTH] Bearer Token
+   Description: Retrieve currently authenticated user information
+
+
+4. USER LOGOUT
+   Method:   POST
+   Endpoint: /logout
+   Auth:     [AUTH] Bearer Token
+   Description: Logout current user and invalidate token
+
+
+================================================================================
+                          PROFILE ENDPOINTS
+================================================================================
+
+5. GET OWN PROFILE
+   Method:   GET
+   Endpoint: /profile
+   Auth:     [AUTH] Bearer Token
+   Description: Get current user's complete profile
+
+
+6. GET PUBLIC PROFILE
+   Method:   GET
+   Endpoint: /profile/{user}
+   Auth:     [AUTH] Bearer Token
+   Parameters:
+     - user: User ID (integer)
+   Description: View another user's public profile
+
+
+7. UPDATE PROFILE
+   Method:   POST
+   Endpoint: /profile/update
+   Auth:     [AUTH] Bearer Token
+   Description: Update current user's profile information
+   Request Body:
+   {
+     "first_name": "string",
+     "last_name": "string",
+     "photo_url": "string",
+     "institution": "string",
+     "field": "string",
+     "study_level": "string",
+     "department": "string",
+     "laboratory": "string",
+     "biography": "string",
+     "linkedin_url": "string",
+     "github_url": "string",
+     "website_url": "string"
+   }
+
+
+8. GENERATE AI BIOGRAPHY
+   Method:   POST
+   Endpoint: /profile/ai-bio
+   Auth:     [AUTH] Bearer Token
+   Description: Generate an AI-powered biography for profile
+
+
+9. ADD SKILL
+   Method:   POST
+   Endpoint: /profile/skills
+   Auth:     [AUTH] Bearer Token
+   Description: Add a new skill to profile
+   Request Body:
+   {
+     "name": "string",
+     "level": "Beginner|Intermediate|Expert"
+   }
+
+
+10. REMOVE SKILL
+    Method:   DELETE
+    Endpoint: /profile/skills/{skill}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - skill: Skill ID (integer)
+    Description: Delete a skill from profile
+
+
+11. ADD EXPERIENCE
+    Method:   POST
+    Endpoint: /profile/experiences
+    Auth:     [AUTH] Bearer Token
+    Description: Add new work/research experience
+    Request Body:
+    {
+      "title": "string",
+      "organization": "string",
+      "location": "string",
+      "start_date": "YYYY-MM-DD",
+      "end_date": "YYYY-MM-DD",
+      "is_current": "boolean",
+      "type": "INTERNSHIP|TEACHING|RESEARCH|OTHER",
+      "description": "string"
+    }
+
+
+12. UPDATE EXPERIENCE
+    Method:   PATCH
+    Endpoint: /profile/experiences/{experience}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - experience: Experience ID (integer)
+    Description: Update an experience record
+
+
+13. REMOVE EXPERIENCE
+    Method:   DELETE
+    Endpoint: /profile/experiences/{experience}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - experience: Experience ID (integer)
+    Description: Delete an experience record
+
+
+14. ADD PUBLICATION
+    Method:   POST
+    Endpoint: /profile/publications
+    Auth:     [AUTH] Bearer Token
+    Description: Add a scholarly publication
+    Request Body:
+    {
+      "title": "string",
+      "publisher": "string",
+      "publication_date": "YYYY-MM-DD",
+      "description": "string",
+      "link": "string"
+    }
+
+
+15. REMOVE PUBLICATION
+    Method:   DELETE
+    Endpoint: /profile/publications/{publication}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - publication: Publication ID (integer)
+    Description: Delete a publication record
+
+
+16. ADD CERTIFICATION
+    Method:   POST
+    Endpoint: /profile/certifications
+    Auth:     [AUTH] Bearer Token
+    Description: Add a certification or credential
+    Request Body:
+    {
+      "title": "string",
+      "issuing_organization": "string",
+      "issue_date": "YYYY-MM-DD",
+      "expiry_date": "YYYY-MM-DD",
+      "credential_id": "string",
+      "credential_url": "string",
+      "description": "string"
+    }
+
+
+17. UPDATE CERTIFICATION
+    Method:   PATCH
+    Endpoint: /profile/certifications/{certification}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - certification: Certification ID (integer)
+    Description: Update certification information
+
+
+18. REMOVE CERTIFICATION
+    Method:   DELETE
+    Endpoint: /profile/certifications/{certification}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - certification: Certification ID (integer)
+    Description: Delete a certification record
+
+
+================================================================================
+                          POST ENDPOINTS
+================================================================================
+
+19. GET ALL POSTS
+    Method:   GET
+    Endpoint: /posts
+    Auth:     [AUTH] Bearer Token
+    Query Parameters:
+      - page: integer (pagination)
+      - per_page: integer (results per page)
+      - type: GENERAL|UNIVERSITY_PROJECT|SCIENTIFIC_ARTICLE (filter)
+    Description: Retrieve all posts (paginated)
+
+
+20. CREATE POST
+    Method:   POST
+    Endpoint: /posts
+    Auth:     [AUTH] Bearer Token
+    Description: Create a new post
+    Request Body:
+    {
+      "content": "string",
+      "file_url": "string (optional)",
+      "link_url": "string (optional)",
+      "type": "GENERAL|UNIVERSITY_PROJECT|SCIENTIFIC_ARTICLE"
+    }
+
+
+21. TOGGLE LIKE ON POST
+    Method:   POST
+    Endpoint: /posts/{post}/like
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - post: Post ID (integer)
+    Description: Like or unlike a post (toggle)
+
+
+22. COMMENT ON POST
+    Method:   POST
+    Endpoint: /posts/{post}/comment
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - post: Post ID (integer)
+    Description: Add a comment to a post
+    Request Body:
+    {
+      "content": "string (max 1000 characters)"
+    }
+
+
+23. SHARE POST
+    Method:   POST
+    Endpoint: /posts/{post}/share
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - post: Post ID (integer)
+    Description: Share/repost a post
+
+
+24. DELETE POST
+    Method:   DELETE
+    Endpoint: /posts/{post}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - post: Post ID (integer)
+    Description: Delete a post (author only)
+
+
+================================================================================
+                        NETWORK & CONNECTION ENDPOINTS
+================================================================================
+
+25. GET NETWORK
+    Method:   GET
+    Endpoint: /network
+    Auth:     [AUTH] Bearer Token
+    Description: Get network overview and statistics
+
+
+26. GET CONNECTIONS
+    Method:   GET
+    Endpoint: /network/connections
+    Auth:     [AUTH] Bearer Token
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+    Description: List all accepted connections (paginated)
+
+
+27. GET CONNECTION SUGGESTIONS
+    Method:   GET
+    Endpoint: /network/suggestions
+    Auth:     [AUTH] Bearer Token
+    Query Parameters:
+      - limit: integer (number of suggestions)
+    Description: Get suggested users to connect with
+
+
+28. SEARCH USERS
+    Method:   GET
+    Endpoint: /network/search
+    Auth:     [AUTH] Bearer Token
+    Query Parameters:
+      - q: string (search query)
+      - type: STUDENT|TEACHER|RESEARCHER (optional filter)
+    Description: Search for users by name or email
+
+
+29. SEND CONNECTION REQUEST
+    Method:   POST
+    Endpoint: /network/request/{user}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - user: User ID (integer)
+    Description: Send a connection request to another user
+
+
+30. ACCEPT CONNECTION REQUEST
+    Method:   POST
+    Endpoint: /network/accept/{user}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - user: User ID (integer)
+    Description: Accept a pending connection request
+
+
+31. REMOVE CONNECTION
+    Method:   DELETE
+    Endpoint: /network/remove/{user}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - user: User ID (integer)
+    Description: Remove an existing connection
+
+
+================================================================================
+                          CHAT ENDPOINTS
+================================================================================
+
+32. GET CHANNELS
+    Method:   GET
+    Endpoint: /chat/channels
+    Auth:     [AUTH] Bearer Token
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+    Description: List all available chat channels
+
+
+33. CREATE CHANNEL
+    Method:   POST
+    Endpoint: /chat/channels
+    Auth:     [AUTH] Bearer Token (Admin Only)
+    Description: Create a new chat channel (admin only)
+    Request Body:
+    {
+      "name": "string",
+      "slug": "string",
+      "description": "string (optional)",
+      "is_private": "boolean"
+    }
+
+
+34. GET CHANNEL MESSAGES
+    Method:   GET
+    Endpoint: /chat/channels/{channel}/messages
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - channel: Channel ID (integer)
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+      - limit: integer (messages)
+    Description: Retrieve messages from a specific channel (paginated)
+
+
+35. SEND MESSAGE TO CHANNEL
+    Method:   POST
+    Endpoint: /chat/channels/{channel}/messages
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - channel: Channel ID (integer)
+    Description: Send a message to a chat channel
+    Request Body:
+    {
+      "content": "string",
+      "file_url": "string (optional)"
+    }
+
+
+36. START PRIVATE CHAT
+    Method:   POST
+    Endpoint: /chat/private/{otherUser}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - otherUser: User ID (integer)
+    Description: Create or start a private chat with another user
+
+
+================================================================================
+                          PROJECT ENDPOINTS
+================================================================================
+
+37. GET ALL PROJECTS
+    Method:   GET
+    Endpoint: /projects
+    Auth:     [AUTH] Bearer Token
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+      - status: OPEN|CLOSED|COMPLETED
+      - type: ACADEMIC|RESEARCH|UNIVERSITY|PERSONAL
+    Description: List all projects (paginated, filterable)
+
+
+38. CREATE PROJECT
+    Method:   POST
+    Endpoint: /projects
+    Auth:     [AUTH] Bearer Token
+    Description: Create a new project
+    Request Body:
+    {
+      "title": "string",
+      "description": "string",
+      "objectives": "string (optional)",
+      "type": "ACADEMIC|RESEARCH|UNIVERSITY|PERSONAL",
+      "status": "OPEN|CLOSED|COMPLETED",
+      "max_members": "integer",
+      "required_skills": "string (optional)"
+    }
+
+
+39. GET PROJECT DETAILS
+    Method:   GET
+    Endpoint: /projects/{project}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+    Description: Get detailed information about a specific project
+
+
+40. GET PROJECT MEMBERS
+    Method:   GET
+    Endpoint: /projects/{project}/members
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+    Description: List all members of a project
+
+
+41. JOIN PROJECT
+    Method:   POST
+    Endpoint: /projects/{project}/join
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+    Description: Request to join a project
+
+
+42. LEAVE PROJECT
+    Method:   POST
+    Endpoint: /projects/{project}/leave
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+    Description: Leave a project
+
+
+43. ACCEPT PROJECT INVITATION
+    Method:   POST
+    Endpoint: /projects/{project}/invite/accept
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+    Description: Accept a project invitation
+
+
+44. DECLINE PROJECT INVITATION
+    Method:   POST
+    Endpoint: /projects/{project}/invite/decline
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+    Description: Decline a project invitation
+
+
+45. INVITE USER TO PROJECT
+    Method:   POST
+    Endpoint: /projects/{project}/invite/{user}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+      - user: User ID (integer)
+    Description: Invite a user to join a project
+
+
+46. APPROVE PROJECT MEMBER
+    Method:   POST
+    Endpoint: /projects/{project}/members/{userId}/approve
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+      - userId: User ID (integer)
+    Description: Approve a pending project membership request
+
+
+47. REJECT PROJECT MEMBER
+    Method:   POST
+    Endpoint: /projects/{project}/members/{userId}/reject
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+      - userId: User ID (integer)
+    Description: Reject a pending project membership request
+
+
+48. DELETE PROJECT
+    Method:   DELETE
+    Endpoint: /projects/{project}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+    Description: Delete a project (owner only)
+
+
+================================================================================
+                          PROJECT TASK ENDPOINTS
+================================================================================
+
+49. GET PROJECT TASKS
+    Method:   GET
+    Endpoint: /projects/{project}/tasks
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+      - status: PENDING|COMPLETED
+    Description: List all tasks in a project
+
+
+50. ADD TASK TO PROJECT
+    Method:   POST
+    Endpoint: /projects/{project}/tasks
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+    Description: Create a new task in a project
+    Request Body:
+    {
+      "title": "string",
+      "assigned_to": "integer (user_id) (optional)"
+    }
+
+
+51. UPDATE TASK
+    Method:   PATCH
+    Endpoint: /projects/{project}/tasks/{task}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+      - task: Task ID (integer)
+    Description: Update a project task
+    Request Body:
+    {
+      "title": "string (optional)",
+      "status": "PENDING|COMPLETED",
+      "assigned_to": "integer (user_id) (optional)"
+    }
+
+
+52. DELETE TASK
+    Method:   DELETE
+    Endpoint: /projects/{project}/tasks/{task}
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - project: Project ID (integer)
+      - task: Task ID (integer)
+    Description: Delete a project task
+
+
+================================================================================
+                          NOTIFICATION ENDPOINTS
+================================================================================
+
+53. GET NOTIFICATIONS
+    Method:   GET
+    Endpoint: /notifications
+    Auth:     [AUTH] Bearer Token
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+      - is_read: boolean
+    Description: Get user's notifications (paginated)
+
+
+54. MARK NOTIFICATION AS READ
+    Method:   POST
+    Endpoint: /notifications/{notification}/read
+    Auth:     [AUTH] Bearer Token
+    Parameters:
+      - notification: Notification ID (integer)
+    Description: Mark a specific notification as read
+
+
+55. MARK ALL NOTIFICATIONS AS READ
+    Method:   POST
+    Endpoint: /notifications/read-all
+    Auth:     [AUTH] Bearer Token
+    Description: Mark all notifications as read
+
+
+56. CLEAR ALL NOTIFICATIONS
+    Method:   DELETE
+    Endpoint: /notifications
+    Auth:     [AUTH] Bearer Token
+    Description: Delete all notifications
+
+
+================================================================================
+                          REPORT ENDPOINTS
+================================================================================
+
+57. SUBMIT REPORT
+    Method:   POST
+    Endpoint: /report
+    Auth:     [AUTH] Bearer Token
+    Description: Report inappropriate content or user
+    Request Body:
+    {
+      "reported_id": "integer",
+      "type": "POST|USER|COMMENT",
+      "reason": "string"
+    }
+
+
+================================================================================
+                          AI ENDPOINTS
+================================================================================
+
+58. ASSIST POST GENERATION
+    Method:   POST
+    Endpoint: /ai/assist-post
+    Auth:     [AUTH] Bearer Token
+    Description: Get AI assistance in creating a post
+    Request Body:
+    {
+      "prompt": "string",
+      "type": "GENERAL|UNIVERSITY_PROJECT|SCIENTIFIC_ARTICLE (optional)"
+    }
+
+
+================================================================================
+                          ADMIN ENDPOINTS
+================================================================================
+
+All admin endpoints require [AUTH] Bearer Token + Admin role
+
+59. GET STATISTICS
+    Method:   GET
+    Endpoint: /admin/stats
+    Auth:     [AUTH] Bearer Token (Admin)
+    Description: Get platform statistics and analytics
+
+
+60. GET ACTIVITY LOG
+    Method:   GET
+    Endpoint: /admin/activity
+    Auth:     [AUTH] Bearer Token (Admin)
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+      - date_from: YYYY-MM-DD
+      - date_to: YYYY-MM-DD
+    Description: Get platform activity log
+
+
+61. GET ALL USERS
+    Method:   GET
+    Endpoint: /admin/users
+    Auth:     [AUTH] Bearer Token (Admin)
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+      - role: STUDENT|TEACHER|RESEARCHER|ADMIN
+      - status: PENDING|ACTIVE|DISABLED|BLOCKED
+    Description: List all users with filtering
+
+
+62. GET PENDING USERS
+    Method:   GET
+    Endpoint: /admin/pending-users
+    Auth:     [AUTH] Bearer Token (Admin)
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+    Description: List users awaiting approval
+
+
+63. APPROVE USER
+    Method:   POST
+    Endpoint: /admin/users/{user}/approve
+    Auth:     [AUTH] Bearer Token (Admin)
+    Parameters:
+      - user: User ID (integer)
+    Description: Approve a pending user account
+
+
+64. REJECT USER
+    Method:   POST
+    Endpoint: /admin/users/{user}/reject
+    Auth:     [AUTH] Bearer Token (Admin)
+    Parameters:
+      - user: User ID (integer)
+    Description: Reject a pending user account
+
+
+65. TOGGLE USER STATUS
+    Method:   POST
+    Endpoint: /admin/users/{user}/toggle-status
+    Auth:     [AUTH] Bearer Token (Admin)
+    Parameters:
+      - user: User ID (integer)
+    Description: Enable/disable a user account
+
+
+66. DELETE USER
+    Method:   DELETE
+    Endpoint: /admin/users/{user}
+    Auth:     [AUTH] Bearer Token (Admin)
+    Parameters:
+      - user: User ID (integer)
+    Description: Delete a user account
+
+
+67. CHANGE USER ROLE
+    Method:   PATCH
+    Endpoint: /admin/users/{user}/role
+    Auth:     [AUTH] Bearer Token (Admin)
+    Parameters:
+      - user: User ID (integer)
+    Description: Change user's role
+    Request Body:
+    {
+      "role": "STUDENT|TEACHER|RESEARCHER|ADMIN"
+    }
+
+
+68. SEND WARNING
+    Method:   POST
+    Endpoint: /admin/users/{user}/warn
+    Auth:     [AUTH] Bearer Token (Admin)
+    Parameters:
+      - user: User ID (integer)
+    Description: Send a warning to a user
+    Request Body:
+    {
+      "message": "string"
+    }
+
+
+69. BAN USER
+    Method:   POST
+    Endpoint: /admin/users/{user}/ban
+    Auth:     [AUTH] Bearer Token (Admin)
+    Parameters:
+      - user: User ID (integer)
+    Description: Ban a user from the platform
+
+
+70. GET ALL POSTS (ADMIN)
+    Method:   GET
+    Endpoint: /admin/posts
+    Auth:     [AUTH] Bearer Token (Admin)
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+    Description: List all posts for moderation
+
+
+71. DELETE POST (ADMIN)
+    Method:   DELETE
+    Endpoint: /admin/posts/{post}
+    Auth:     [AUTH] Bearer Token (Admin)
+    Parameters:
+      - post: Post ID (integer)
+    Description: Delete any post (admin moderation)
+
+
+72. GET REPORTS
+    Method:   GET
+    Endpoint: /admin/reports
+    Auth:     [AUTH] Bearer Token (Admin)
+    Query Parameters:
+      - page: integer
+      - per_page: integer
+      - status: PENDING|RESOLVED|DISMISSED
+      - type: POST|USER|COMMENT
+    Description: List all user reports
+
+
+73. RESOLVE REPORT
+    Method:   POST
+    Endpoint: /admin/reports/{report}/resolve
+    Auth:     [AUTH] Bearer Token (Admin)
+    Parameters:
+      - report: Report ID (integer)
+    Description: Mark a report as resolved
+    Request Body:
+    {
+      "action": "string",
+      "notes": "string (optional)"
+    }
+
+
+================================================================================
+                          AUTHENTICATION
+================================================================================
+
+All endpoints marked with [AUTH] require:
+- Header: Authorization: Bearer {token}
+- Token obtained from login endpoint
+- Token format: Sanctum API token provided after successful authentication
+
+
+================================================================================
+                          HTTP STATUS CODES
+================================================================================
+
+200 - OK: Request successful
+201 - Created: Resource created successfully
+204 - No Content: Successful request with no content
+400 - Bad Request: Invalid request parameters
+401 - Unauthorized: Missing or invalid token
+403 - Forbidden: Insufficient permissions
+404 - Not Found: Resource not found
+422 - Unprocessable Entity: Validation error
+500 - Internal Server Error: Server error
+
+
+================================================================================
+                          PAGINATION
+================================================================================
+
+Paginated endpoints return:
+{
+  "data": [...],
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 5,
+    "per_page": 15,
+    "to": 15,
+    "total": 75
+  },
+  "links": {
+    "first": "...",
+    "last": "...",
+    "next": "...",
+    "prev": null
+  }
+}
+
+
+================================================================================
+                          NOTIFICATION TYPES
+================================================================================
+
+- CONNECTION_REQUEST: New connection request received
+- CONNECTION_ACCEPTED: Your connection request was accepted
+- POST_LIKED: Someone liked your post
+- POST_COMMENTED: Someone commented on your post
+- PROJECT_INVITATION: You were invited to a project
+- PROJECT_JOIN_REQUEST: Someone requested to join your project
+- PROJECT_JOIN_ACCEPTED: Your join request was accepted
+- PROJECT_JOIN_REJECTED: Your join request was rejected
+- PROJECT_NEW_MESSAGE: New message in project channel
+- DIRECT_MESSAGE_RECEIVED: You received a direct message
+- ACCOUNT_VALIDATED: Your account has been approved
+- ACCOUNT_REJECTED: Your account has been rejected
+
+
+================================================================================
+                              END OF DOCUMENTATION
+================================================================================
