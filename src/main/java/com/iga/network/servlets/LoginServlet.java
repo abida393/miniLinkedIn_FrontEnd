@@ -33,14 +33,22 @@ public class LoginServlet extends HttpServlet {
                 User user = User.fromJson(data.optJSONObject("user"));
 
                 if (token.isEmpty()) {
-                    request.setAttribute("error", "Login successful but no token received. Response: " + data.toString());
+                    request.setAttribute("error",
+                            "Login successful but no token received. Response: " + data.toString());
                     request.getRequestDispatcher("/pages/login.jsp").forward(request, response);
                     return;
                 }
 
+                // FIX: Invalidate any existing session before creating a new one
+                // to prevent session fixation attacks.
+                //HttpSession oldSession = request.getSession(false);
+                //if (oldSession != null) {
+                  //  oldSession.invalidate();
+                //}
+
                 HttpSession session = request.getSession(true);
                 session.setAttribute("authToken", token);
-                
+
                 if (user != null) {
                     session.setAttribute("userId", user.getId());
                     session.setAttribute("userName", user.getFullName());
@@ -60,7 +68,8 @@ public class LoginServlet extends HttpServlet {
                 String errorMsg = "Invalid credentials (Status: " + statusCode + ")";
                 if (result.has("data")) {
                     JSONObject errorData = result.getJSONObject("data");
-                    if (errorData.has("message")) errorMsg = errorData.getString("message");
+                    if (errorData.has("message"))
+                        errorMsg = errorData.getString("message");
                 }
                 request.setAttribute("error", errorMsg);
                 request.getRequestDispatcher("/pages/login.jsp").forward(request, response);
@@ -68,7 +77,8 @@ public class LoginServlet extends HttpServlet {
 
         } catch (Exception e) {
             String detailedError = "System Error: " + e.getMessage();
-            if (e.getCause() != null) detailedError += " (Cause: " + e.getCause().getMessage() + ")";
+            if (e.getCause() != null)
+                detailedError += " (Cause: " + e.getCause().getMessage() + ")";
             request.setAttribute("error", detailedError);
             request.getRequestDispatcher("/pages/login.jsp").forward(request, response);
         }

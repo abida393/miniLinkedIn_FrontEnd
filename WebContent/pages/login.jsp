@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"%>
 <%
     request.setAttribute("pageTitle", "Login | IGA Network");
     String errorMsg = (String) request.getAttribute("error");
@@ -75,15 +75,10 @@
             </div>
             <% } %>
 
-            <!-- Role Selector -->
-            <div class="flex p-1 bg-[#161b22] rounded-xl mb-8 border border-white/5" id="roleSelector">
-                <button type="button" onclick="selectRole('STUDENT', this)" class="role-btn flex-1 py-2 text-xs font-bold text-white bg-blue-500 rounded-lg shadow-lg shadow-blue-500/20">STUDENT</button>
-                <button type="button" onclick="selectRole('TEACHER', this)" class="role-btn flex-1 py-2 text-xs font-bold text-gray-500 hover:text-white transition-colors">TEACHER</button>
-                <button type="button" onclick="selectRole('RESEARCHER', this)" class="role-btn flex-1 py-2 text-xs font-bold text-gray-500 hover:text-white transition-colors">RESEARCHER</button>
-            </div>
+
 
             <form action="<%= request.getContextPath() %>/auth/login" method="POST" class="space-y-6">
-                <input type="hidden" name="role" id="selectedRole" value="STUDENT">
+
                 <!-- Email Input -->
                 <div class="relative group">
                     <input type="email" name="email" placeholder="Email Address" required
@@ -99,29 +94,23 @@
                     </button>
                 </div>
 
-                <!-- Verification Code (Mockup) -->
-                <div class="space-y-3">
-                    <label class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Verification Code</label>
-                    <div class="flex gap-3">
-                        <input type="text" maxlength="1" class="w-full h-14 bg-[#161b22] border border-white/10 rounded-xl text-center text-white font-bold text-xl focus:ring-2 focus:ring-blue-500/50 outline-none transition-all">
-                        <input type="text" maxlength="1" class="w-full h-14 bg-[#161b22] border border-white/10 rounded-xl text-center text-white font-bold text-xl focus:ring-2 focus:ring-blue-500/50 outline-none transition-all">
-                        <input type="text" maxlength="1" class="w-full h-14 bg-[#161b22] border border-white/10 rounded-xl text-center text-white font-bold text-xl focus:ring-2 focus:ring-blue-500/50 outline-none transition-all">
-                        <input type="text" maxlength="1" class="w-full h-14 bg-[#161b22] border border-white/10 rounded-xl text-center text-white font-bold text-xl focus:ring-2 focus:ring-blue-500/50 outline-none transition-all">
-                    </div>
-                    <div class="text-right">
-                        <button type="button" class="text-xs text-blue-400 hover:underline">Didn't receive a code? <span class="font-bold">Resend</span></button>
-                    </div>
-                </div>
+
 
                 <div class="flex items-center justify-between">
                     <label class="flex items-center text-sm text-gray-400 cursor-pointer group">
-                        <input type="checkbox" class="hidden">
+                        <input type="checkbox" name="remember" value="true" class="hidden"
+                               onchange="this.nextElementSibling.querySelector('i').classList.toggle('hidden')">
                         <div class="w-5 h-5 border border-white/10 bg-[#161b22] rounded mr-3 flex items-center justify-center group-hover:border-blue-500/50 transition-all">
                             <i data-lucide="check" class="w-3 h-3 text-blue-400 hidden"></i>
                         </div>
                         Remember me
                     </label>
-                    <a href="#" class="text-sm text-blue-400 hover:underline">Forgot password?</a>
+                    <a href="#" onclick="this.nextElementSibling.classList.toggle('hidden'); return false;" class="text-sm text-blue-400 hover:underline">
+                        Forgot password?
+                    </a>
+                    <p class="hidden text-xs text-white/30 mt-2 italic">
+                        Please contact your administrator to reset your password.
+                    </p>
                 </div>
 
                 <!-- Sign In Button -->
@@ -131,19 +120,19 @@
             </form>
 
             <div class="mt-8 text-center text-gray-400">
-                Don't have an account? <a href="#" class="text-white font-bold hover:underline">Create account</a>
+                Don't have an account? <a href="<%= request.getContextPath() %>/pages/register.jsp" class="text-white font-bold hover:underline">Create account</a>
             </div>
 
             <!-- Social Logins -->
             <div class="mt-10 space-y-3">
-                <button class="w-full flex items-center justify-center py-4 bg-[#161b22] border border-white/5 rounded-xl text-gray-300 hover:bg-[#1c2128] transition-all">
+                <button type="button" onclick="showToast && showToast('Social login coming soon', 'info')" class="w-full flex items-center justify-center py-4 bg-[#161b22] border border-white/5 rounded-xl text-gray-300 hover:bg-[#1c2128] transition-all">
                     <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="M12 8l4 4-4 4"></path>
                     </svg>
                     Continue with Google
                 </button>
-                <button class="w-full flex items-center justify-center py-4 bg-[#161b22] border border-white/5 rounded-xl text-gray-300 hover:bg-[#1c2128] transition-all">
+                <button type="button" onclick="showToast && showToast('Social login coming soon', 'info')" class="w-full flex items-center justify-center py-4 bg-[#161b22] border border-white/5 rounded-xl text-gray-300 hover:bg-[#1c2128] transition-all">
                     <svg class="w-5 h-5 mr-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
                         <path d="M9 18c-4.51 2-5-2-7-2"></path>
@@ -178,27 +167,23 @@
             console.warn("Lucide icons could not be initialized:", e);
         }
         
+        if (typeof showToast === 'undefined') {
+            function showToast(msg, type) {
+                const t = document.createElement('div');
+                t.className = 'fixed bottom-6 right-6 z-50 px-6 py-3 rounded-xl font-bold text-sm ' +
+                    (type === 'error' ? 'bg-red-500' : 'bg-blue-600') + ' text-white shadow-xl animate-bounce-in';
+                t.textContent = msg;
+                document.body.appendChild(t);
+                setTimeout(() => t.remove(), 3000);
+            }
+        }
+
         function togglePassword() {
             const pwd = document.getElementById('password');
             pwd.type = pwd.type === 'password' ? 'text' : 'password';
         }
 
-        function selectRole(role, btn) {
-            // Update hidden input
-            document.getElementById('selectedRole').value = role;
-            
-            // Reset all buttons
-            document.querySelectorAll('.role-btn').forEach(b => {
-                b.classList.remove('text-white', 'bg-blue-500', 'shadow-lg', 'shadow-blue-500/20');
-                b.classList.add('text-gray-500', 'hover:text-white', 'transition-colors');
-            });
-            
-            // Set active button
-            btn.classList.remove('text-gray-500', 'hover:text-white', 'transition-colors');
-            btn.classList.add('text-white', 'bg-blue-500', 'shadow-lg', 'shadow-blue-500/20');
-            
-            console.log("Selected role:", role);
-        }
+
     </script>
 </body>
 </html>

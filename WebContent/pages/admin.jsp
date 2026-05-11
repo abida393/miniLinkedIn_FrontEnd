@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"%>
 <%
     request.setAttribute("pageTitle", "Admin Dashboard | IGA Network");
     HttpSession userSession = request.getSession(false);
@@ -91,8 +91,8 @@
                     <p class="text-white/40 text-sm italic">Welcome back, Admin. System pulse is steady at 98.4% uptime.</p>
                 </div>
                 <div class="text-right">
-                    <div class="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1">October 24, 2023</div>
-                    <div class="text-sm font-bold text-white">09:42 AM EST</div>
+                    <div id="admin-date" class="text-[10px] font-bold text-white/40 uppercase tracking-widest mb-1"></div>
+                    <div id="admin-time" class="text-sm font-bold text-white"></div>
                 </div>
             </div>
 
@@ -394,6 +394,22 @@
 
     <script>
         lucide.createIcons();
+        
+        function updateAdminClock() {
+            const now = new Date();
+            const dateEl = document.getElementById('admin-date');
+            const timeEl = document.getElementById('admin-time');
+            if (dateEl) dateEl.textContent = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            if (timeEl) timeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+        updateAdminClock();
+        setInterval(updateAdminClock, 1000);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof window.loadAdminDashboard === 'function') {
+                window.loadAdminDashboard();
+            }
+        });
     </script>
 </body>
 </html>

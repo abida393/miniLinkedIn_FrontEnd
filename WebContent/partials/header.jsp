@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"%>
 <%
     String path = request.getContextPath();
     String title = (String) request.getAttribute("pageTitle");
@@ -47,4 +47,25 @@
     
     <!-- Custom Styles -->
     <link rel="stylesheet" href="<%= path %>/assets/css/main.css">
+    
+    <!-- Frontend JavaScript Libraries -->
+    <script src="<%= path %>/assets/js/api.js"></script>
+    <script src="<%= path %>/assets/js/utils.js"></script>
+    <script src="<%= path %>/assets/js/render.js"></script>
+    <script src="<%= path %>/assets/js/event-handlers.js"></script>
+
+    <!-- Sync server HttpSession → client sessionStorage for JS auth checks -->
+    <script>
+        (function() {
+            <%
+                HttpSession userSess = request.getSession(false);
+                if (userSess != null && userSess.getAttribute("authToken") != null) {
+                    String jsToken  = (String) userSess.getAttribute("authToken");
+                    String jsUserId = String.valueOf(userSess.getAttribute("userId"));
+            %>
+                sessionStorage.setItem('authToken', '<%= jsToken %>');
+                sessionStorage.setItem('iga_user_id', '<%= jsUserId %>');
+            <% } %>
+        })();
+    </script>
 </head>

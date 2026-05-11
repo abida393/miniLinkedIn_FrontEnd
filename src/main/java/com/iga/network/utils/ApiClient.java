@@ -185,6 +185,10 @@ public class ApiClient {
         return patch("/profile/certifications/" + certId, data, token);
     }
 
+    public static JSONObject removeCertification(String token, int certId) throws IOException {
+        return delete("/profile/certifications/" + certId, token);
+    }
+
     // ─── 3. Posts ──────────────────────────────────────────────────────────
 
     public static JSONObject getPosts(String token, int page, String type) throws IOException {
@@ -284,6 +288,34 @@ public class ApiClient {
         return post("/projects/" + projectId + "/invite/decline", null, token);
     }
 
+    public static JSONObject getProjectTasks(String token, int projectId) throws IOException {
+        return get("/projects/" + projectId + "/tasks", token);
+    }
+
+    public static JSONObject createProjectTask(String token, int projectId, JSONObject data) throws IOException {
+        return post("/projects/" + projectId + "/tasks", data, token);
+    }
+
+    public static JSONObject updateProjectTask(String token, int projectId, int taskId, JSONObject data) throws IOException {
+        return patch("/projects/" + projectId + "/tasks/" + taskId, data, token);
+    }
+
+    public static JSONObject deleteProjectTask(String token, int projectId, int taskId) throws IOException {
+        return delete("/projects/" + projectId + "/tasks/" + taskId, token);
+    }
+
+    public static JSONObject inviteToProject(String token, int projectId, int userId) throws IOException {
+        return post("/projects/" + projectId + "/invite/" + userId, null, token);
+    }
+
+    public static JSONObject approveMember(String token, int projectId, int userId) throws IOException {
+        return post("/projects/" + projectId + "/members/" + userId + "/approve", null, token);
+    }
+
+    public static JSONObject rejectMember(String token, int projectId, int userId) throws IOException {
+        return post("/projects/" + projectId + "/members/" + userId + "/reject", null, token);
+    }
+
     // ─── 6. Notifications ──────────────────────────────────────────────────
 
     public static JSONObject getNotifications(String token, int page, String isRead) throws IOException {
@@ -336,5 +368,83 @@ public class ApiClient {
         JSONObject body = new JSONObject();
         body.put("role", role);
         return patch("/admin/users/" + userId + "/role", body, token);
+    }
+
+    public static JSONObject getAdminActivity(String token, int page, String dateFrom, String dateTo) throws IOException {
+        String endpoint = "/admin/activity?page=" + page;
+        if (dateFrom != null) endpoint += "&date_from=" + dateFrom;
+        if (dateTo != null) endpoint += "&date_to=" + dateTo;
+        return get(endpoint, token);
+    }
+
+    public static JSONObject getPendingUsers(String token, int page) throws IOException {
+        return get("/admin/pending-users?page=" + page, token);
+    }
+
+    public static JSONObject rejectUser(String token, int userId) throws IOException {
+        return post("/admin/users/" + userId + "/reject", null, token);
+    }
+
+    public static JSONObject toggleUserStatus(String token, int userId) throws IOException {
+        return post("/admin/users/" + userId + "/toggle-status", null, token);
+    }
+
+    public static JSONObject deleteUser(String token, int userId) throws IOException {
+        return delete("/admin/users/" + userId, token);
+    }
+
+    public static JSONObject sendWarning(String token, int userId, String message) throws IOException {
+        JSONObject body = new JSONObject();
+        body.put("message", message);
+        return post("/admin/users/" + userId + "/warn", body, token);
+    }
+
+    public static JSONObject getAdminPosts(String token, int page) throws IOException {
+        return get("/admin/posts?page=" + page, token);
+    }
+
+    public static JSONObject deleteAdminPost(String token, int postId) throws IOException {
+        return delete("/admin/posts/" + postId, token);
+    }
+
+    public static JSONObject getReports(String token, int page, String status, String type) throws IOException {
+        String endpoint = "/admin/reports?page=" + page;
+        if (status != null) endpoint += "&status=" + status;
+        if (type != null) endpoint += "&type=" + type;
+        return get(endpoint, token);
+    }
+
+    // ─── 8. Chat ───────────────────────────────────────────────────────────
+
+    public static JSONObject startPrivateChat(String token, int otherUserId) throws IOException {
+        return post("/chat/private/" + otherUserId, null, token);
+    }
+
+    public static JSONObject sendMessage(String token, int channelId, String content) throws IOException {
+        JSONObject body = new JSONObject();
+        body.put("content", content);
+        return post("/chat/channels/" + channelId + "/messages", body, token);
+    }
+
+    public static JSONObject createChannel(String token, JSONObject data) throws IOException {
+        return post("/chat/channels", data, token);
+    }
+
+    // ─── 9. Miscellaneous ──────────────────────────────────────────────────
+
+    public static JSONObject addPublication(String token, JSONObject data) throws IOException {
+        return post("/profile/publications", data, token);
+    }
+
+    public static JSONObject deletePublication(String token, String id) throws IOException {
+        return delete("/profile/publications/" + id, token);
+    }
+
+    public static JSONObject submitReport(String token, JSONObject data) throws IOException {
+        return post("/report", data, token);
+    }
+
+    public static JSONObject aiAssistPost(String token, JSONObject data) throws IOException {
+        return post("/ai/assist-post", data, token);
     }
 }

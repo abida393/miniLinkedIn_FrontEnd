@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false"%>
 <footer class="py-10 bg-white border-t border-gray-200 mt-10">
     <div class="max-w-6xl mx-auto px-4">
         <div class="flex flex-col md:flex-row justify-between items-start space-y-8 md:space-y-0">

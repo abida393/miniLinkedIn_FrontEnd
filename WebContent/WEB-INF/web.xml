@@ -12,6 +12,10 @@
     <param-value>http://localhost:8000/api</param-value>
   </context-param>
 
+  <!-- Application Context Listener -->
+  <listener>
+    <listener-class>com.iga.network.utils.AppContextListener</listener-class>
+  </listener>
   <!-- Default welcome page -->
   <welcome-file-list>
     <welcome-file>pages/login.jsp</welcome-file>
@@ -46,6 +50,18 @@
     <filter-name>AuthFilter</filter-name>
     <url-pattern>/pages/admin.jsp</url-pattern>
   </filter-mapping>
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/pages/network.jsp</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/pages/edit-profile.jsp</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/pages/project-details.jsp</url-pattern>
+  </filter-mapping>
 
   <!-- Login Servlet -->
   <servlet>
@@ -65,6 +81,484 @@
   <servlet-mapping>
     <servlet-name>LogoutServlet</servlet-name>
     <url-pattern>/auth/logout</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= USER SERVLETS ============= -->
+
+  <servlet>
+    <servlet-name>RegisterServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.RegisterServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RegisterServlet</servlet-name>
+    <url-pattern>/api/register</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetCurrentUserServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetCurrentUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetCurrentUserServlet</servlet-name>
+    <url-pattern>/api/user</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= POST SERVLETS ============= -->
+  
+  <servlet>
+    <servlet-name>GetPostsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetPostsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetPostsServlet</servlet-name>
+    <url-pattern>/api/posts</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CreatePostServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.CreatePostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreatePostServlet</servlet-name>
+    <url-pattern>/api/posts/create</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>LikePostServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.LikePostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LikePostServlet</servlet-name>
+    <url-pattern>/api/posts/like</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CommentPostServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.CommentPostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CommentPostServlet</servlet-name>
+    <url-pattern>/api/posts/comment</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeletePostServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.DeletePostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeletePostServlet</servlet-name>
+    <url-pattern>/api/posts/delete</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SharePostServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.SharePostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SharePostServlet</servlet-name>
+    <url-pattern>/api/posts/share</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= PROFILE SERVLETS ============= -->
+
+  <servlet>
+    <servlet-name>GetProfileServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetProfileServlet</servlet-name>
+    <url-pattern>/api/profile</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UpdateProfileServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.UpdateProfileServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateProfileServlet</servlet-name>
+    <url-pattern>/api/profile/update</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AddSkillServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.AddSkillServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddSkillServlet</servlet-name>
+    <url-pattern>/api/profile/skills/add</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RemoveSkillServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.RemoveSkillServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RemoveSkillServlet</servlet-name>
+    <url-pattern>/api/profile/skills/remove</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AddExperienceServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.AddExperienceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddExperienceServlet</servlet-name>
+    <url-pattern>/api/profile/experiences/add</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>UpdateExperienceServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.UpdateExperienceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UpdateExperienceServlet</servlet-name>
+    <url-pattern>/api/profile/experiences/update</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteExperienceServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.DeleteExperienceServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteExperienceServlet</servlet-name>
+    <url-pattern>/api/profile/experiences/delete</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AddPublicationServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.AddPublicationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AddPublicationServlet</servlet-name>
+    <url-pattern>/api/profile/publications/add</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RemovePublicationServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.RemovePublicationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RemovePublicationServlet</servlet-name>
+    <url-pattern>/api/profile/publications/remove</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GenerateAiBioServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GenerateAiBioServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GenerateAiBioServlet</servlet-name>
+    <url-pattern>/api/profile/ai-bio</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= PROJECT SERVLETS ============= -->
+
+  <servlet>
+    <servlet-name>GetProjectsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetProjectsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetProjectsServlet</servlet-name>
+    <url-pattern>/api/projects</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetProjectDetailsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetProjectDetailsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetProjectDetailsServlet</servlet-name>
+    <url-pattern>/api/projects/details</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CreateProjectServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.CreateProjectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CreateProjectServlet</servlet-name>
+    <url-pattern>/api/projects/create</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>JoinProjectServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.JoinProjectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>JoinProjectServlet</servlet-name>
+    <url-pattern>/api/projects/join</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>LeaveProjectServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.LeaveProjectServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LeaveProjectServlet</servlet-name>
+    <url-pattern>/api/projects/leave</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= CHAT SERVLETS ============= -->
+
+  <servlet>
+    <servlet-name>GetChannelsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetChannelsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetChannelsServlet</servlet-name>
+    <url-pattern>/api/chat/channels</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetMessagesServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetMessagesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetMessagesServlet</servlet-name>
+    <url-pattern>/api/chat/channels/messages</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= NOTIFICATION SERVLETS ============= -->
+
+  <servlet>
+    <servlet-name>GetNotificationsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetNotificationsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetNotificationsServlet</servlet-name>
+    <url-pattern>/api/notifications</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>MarkNotificationReadServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.MarkNotificationReadServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MarkNotificationReadServlet</servlet-name>
+    <url-pattern>/api/notifications/read</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= NETWORK SERVLETS ============= -->
+
+  <servlet>
+    <servlet-name>GetNetworkStatsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetNetworkStatsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetNetworkStatsServlet</servlet-name>
+    <url-pattern>/api/network/stats</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetSuggestionsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetSuggestionsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetSuggestionsServlet</servlet-name>
+    <url-pattern>/api/network/suggestions</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>SearchUsersServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.SearchUsersServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchUsersServlet</servlet-name>
+    <url-pattern>/api/network/search</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetConnectionsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetConnectionsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetConnectionsServlet</servlet-name>
+    <url-pattern>/api/network/connections</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SendConnectionRequestServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.SendConnectionRequestServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SendConnectionRequestServlet</servlet-name>
+    <url-pattern>/api/network/request</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>AcceptConnectionRequestServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.AcceptConnectionRequestServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AcceptConnectionRequestServlet</servlet-name>
+    <url-pattern>/api/network/accept</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RemoveConnectionServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.RemoveConnectionServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RemoveConnectionServlet</servlet-name>
+    <url-pattern>/api/network/remove</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= ADMIN SERVLETS ============= -->
+
+  <servlet>
+    <servlet-name>GetAdminStatsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetAdminStatsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetAdminStatsServlet</servlet-name>
+    <url-pattern>/api/admin/stats</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetAdminActivityServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetAdminActivityServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetAdminActivityServlet</servlet-name>
+    <url-pattern>/api/admin/activity</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetAdminUsersServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetAdminUsersServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetAdminUsersServlet</servlet-name>
+    <url-pattern>/api/admin/users</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetPendingUsersServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetPendingUsersServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetPendingUsersServlet</servlet-name>
+    <url-pattern>/api/admin/pending-users</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ApproveUserServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.ApproveUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ApproveUserServlet</servlet-name>
+    <url-pattern>/api/admin/users/approve</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>RejectUserServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.RejectUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>RejectUserServlet</servlet-name>
+    <url-pattern>/api/admin/users/reject</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ToggleUserStatusServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.ToggleUserStatusServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ToggleUserStatusServlet</servlet-name>
+    <url-pattern>/api/admin/users/toggle-status</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteAdminUserServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.DeleteAdminUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteAdminUserServlet</servlet-name>
+    <url-pattern>/api/admin/users/delete</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ChangeUserRoleServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.ChangeUserRoleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChangeUserRoleServlet</servlet-name>
+    <url-pattern>/api/admin/users/role</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SendWarningServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.SendWarningServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SendWarningServlet</servlet-name>
+    <url-pattern>/api/admin/users/warn</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>BanUserServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.BanUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BanUserServlet</servlet-name>
+    <url-pattern>/api/admin/users/ban</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetAdminPostsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetAdminPostsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetAdminPostsServlet</servlet-name>
+    <url-pattern>/api/admin/posts</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeleteAdminPostServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.DeleteAdminPostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeleteAdminPostServlet</servlet-name>
+    <url-pattern>/api/admin/posts/delete</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>GetReportsServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.GetReportsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>GetReportsServlet</servlet-name>
+    <url-pattern>/api/admin/reports</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>ResolveReportServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.ResolveReportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ResolveReportServlet</servlet-name>
+    <url-pattern>/api/admin/reports/resolve</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= REPORT SERVLETS ============= -->
+
+  <servlet>
+    <servlet-name>SubmitReportServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.SubmitReportServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SubmitReportServlet</servlet-name>
+    <url-pattern>/api/report/submit</url-pattern>
+  </servlet-mapping>
+
+  <!-- ============= AI SERVLETS ============= -->
+
+  <servlet>
+    <servlet-name>AiAssistPostServlet</servlet-name>
+    <servlet-class>com.iga.network.servlets.AiAssistPostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AiAssistPostServlet</servlet-name>
+    <url-pattern>/api/ai/assist-post</url-pattern>
   </servlet-mapping>
 
   <!-- Session timeout: 60 minutes -->
